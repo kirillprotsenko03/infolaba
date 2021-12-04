@@ -16,7 +16,7 @@ def message_handle():
             session = vk.Session(access_token=TOKEN)
             api = vk.API(session, v=5.95)
             user_id = data["object"]["from_id"]
-            api.messages.send(user_ids=user_id, message='hello, i am bot', access_token=TOKEN,
+            api.messages.send(user_ids=user_id, message="я буду работать когда саня скинет код библиотеки", access_token=TOKEN,
                               random_id=random.randint(-2147483648, 2147483647))
             return "ok", 200
     else:
