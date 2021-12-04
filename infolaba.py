@@ -12,15 +12,13 @@ app = Flask(__name__)
 def message_handle():
     if request.method == "POST":
         data = request.get_json()
-        if data["type"] == "confirmation" and data["group_id"] == 186539292:
-            return "51457a67"
-        elif data["type"] == "message_new":
+        if data["type"] == "message_new":
             session = vk.Session(access_token=TOKEN)
-            api = vk.API(session, v=5.131)
-            user_id = data['object']['from_id']
+            api = vk.API(session, v=5.95)
+            user_id = data["object"]["from_id"]
             api.messages.send(user_ids=user_id, message='hello, i am bot', access_token=TOKEN,
                               random_id=random.randint(-2147483648, 2147483647))
-            return "ok"
+            return "ok", 200
     else:
         return "hello, world!"
 
