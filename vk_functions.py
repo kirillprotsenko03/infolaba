@@ -17,7 +17,7 @@ def send_vk_message(data: dict, token: str):
         if command == "закодируй":
             message = ders_crypt(message)
         if command == "раскодируй":
-            message = command
+            message = decoding(message)
 
         api.messages.send(user_ids=user_id, message=message,
                           access_token=token, random_id=random.randint(-2147483648, 2147483647))
