@@ -1,10 +1,3 @@
-ALPHABET = {'А': 1, 'Б': 2, 'В': 3, 'Г': 4, 'Д': 5, 'Е': 6, 'Ж': 7, 'З': 8, 'И': 9, 'Й': 10, 'К': 11, 'Л': 12, 'М': 13,
-            'Н': 14, 'О': 15, 'П': 16, 'Р': 17, 'С': 18, 'Т': 19, 'У': 20, 'Ф': 21, 'Х': 22, 'Ц': 23, 'Ч': 24, 'Ш': 25,
-            'Щ': 26, 'Ъ': 27, 'Ы': 28, 'Ь': 29, 'Э': 30, 'Ю': 31, 'Я': 32}
-
-WARNING_MESSAGE = "пожалуйста, введите слово на РУССКОМ языке без пробелов"
-
-
 def convert(number, old_base, new_base):
     number = str(number)
     amount = 0
@@ -31,34 +24,68 @@ def permutation(number, position):
 
 
 def ders_crypt(word):
-    word = word.upper()
-    letters_position = []
+    letters_code = []
     result = []
     temp1 = []
     temp2 = []
     for letter in word:
-        try:
-            letters_position.append(ALPHABET[letter])
-        except KeyError:
-            return WARNING_MESSAGE
+        letters_code.append(ord(letter))
 
-    for i in range(len(letters_position)):
-        if letters_position[i] % 2 == 0:
-            temp1.append(permutation(convert(letters_position[i] + 1306, 10, 2), i + 1))
+    for i in range(len(letters_code)):
+        if i % 2 == 1:
+            temp1.append(permutation(convert(letters_code[i] + 1306, 10, 2), i + 1))
         else:
-            temp1.append(permutation(convert(letters_position[i] + 1306, 10, 3), i + 1))
+            temp1.append(permutation(convert(letters_code[i] + 1306, 10, 3), i + 1))
 
     for i in range(len(temp1)):
         temp2.append(int(''.join(map(str, temp1[i]))))
 
     for i in range(len(temp1)):
-        if letters_position[i] % 2 == 0:
+        if i % 2 == 1:
             temp1[i] = convert(temp2[i], 2, 10)
         else:
             temp1[i] = convert(temp2[i], 3, 10)
 
     for i in range(len(temp1)):
         result.append(int(''.join(map(str, temp1[i]))) - 1306)
+        result.append('.')
 
     result = ''.join(map(str, result))
+
+    return result
+
+
+def decoding(string):
+    letter = []
+    letter_num = []
+    temp1 = []
+    temp2 = []
+    letter_num_temp = (string.split('.'))
+    letter_num_temp.remove(letter_num_temp[len(letter_num_temp) - 1])
+
+    for i in range(len(letter_num_temp)):
+        letter_num.append(int(letter_num_temp[i]))
+
+    for i in range(len(letter_num)):
+        letter_num[i] = letter_num[i] + 1306
+        if i % 2 == 1:
+            temp1.append(permutation(convert(letter_num[i], 10, 2), i + 1))
+        else:
+            temp1.append(permutation(convert(letter_num[i], 10, 3), i + 1))
+
+    for i in range(len(temp1)):
+        temp1[i] = int(''.join(map(str, temp1[i])))
+
+    for i in range(len(temp1)):
+        if i % 2 == 1:
+            temp2.append(convert(temp1[i], 2, 10))
+        else:
+            temp2.append(convert(temp1[i], 3, 10))
+
+    for i in range(len(temp1)):
+        temp2[i] = int(''.join(map(str, temp2[i]))) - 1306
+        letter.append(chr(temp2[i]))
+
+    result = ''.join(map(str, letter))
+
     return result
