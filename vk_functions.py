@@ -10,11 +10,12 @@ def send_vk_message(data: dict, token: str):
         user_id = data["object"]["from_id"]
         text = data["object"]["text"]
         text = text.split()
-        command = text[0]
-        text = text[1:]
         message = ""
+        command = text[0]
+        for word in text[1:]:
+            message += word + " "
         if command == "закодируй":
-            message = command
+            message = ders_crypt(message)
         if command == "раскодируй":
             message = command
 
