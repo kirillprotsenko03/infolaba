@@ -16,8 +16,14 @@ def send_vk_message(data: dict, token: str):
             message += word + " "
         if command == "закодируй":
             message = ders_crypt(message)
-        if command == "раскодируй":
+        elif command == "раскодируй":
             message = decoding(message)
+        else:
+            message = """привет, ты наверное пользуешься ботом впервые, или забыл как это делать.
+                         если тебе нужно закодировать сообщение, то напиши боту закодировать и свое сообщение.
+                         пример: закодировать привет.
+                         если тебе нужно раскодировать сообщение, то напиши боту раскодировать и свой код.
+                         например: раскодировать 112.1245.64.13"""
 
         api.messages.send(user_ids=user_id, message=message,
                           access_token=token, random_id=random.randint(-2147483648, 2147483647))
