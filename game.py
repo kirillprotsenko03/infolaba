@@ -99,6 +99,8 @@ class LettersManager:
                     self.messenger.add_letter(letter.letter)
                     active_bullets.remove(bullet)
                     self.active_letters.remove(letter)
+            if letter.rect.y > HEIGHT - letter.rect.height:
+                self.active_letters.remove(letter)
 
     def draw(self):
         for letter in self.active_letters:
@@ -132,7 +134,7 @@ class BulletsManager:
     def move(self):
         for bullet in self.active_bullet:
             bullet.move()
-            if bullet.rect.y < 0:
+            if bullet.rect.y < -bullet.rect.height:
                 self.active_bullet.remove(bullet)
 
     def draw(self):
@@ -162,11 +164,6 @@ class Messenger:
 
         return user_id
 
-    def draw_message(self):
-        font = pygame.font.Font(None, 45)
-        text = font.render(self.text, False, (0, 180, 0))
-        self.screen.blit(text, (10, 50))
-
 
 def handle_event(player, bullets, messenger):
     for event in pygame.event.get():
@@ -188,11 +185,14 @@ def handle_event(player, bullets, messenger):
                 player.change_right_moving()
 
 
-def draw_screen(screen, player, letters, bullets):
+def draw_screen(screen, player, letters, bullets, text):
     screen.fill(BLACK)
     player.draw()
     letters.draw()
     bullets.draw()
+    font = pygame.font.Font(None, 36)
+    text = font.render(text, False, (0, 180, 0))
+    screen.blit(text, (10, 10))
     pygame.display.flip()
 
 
@@ -212,7 +212,7 @@ def main():
         manager_letters.move(player.rect, manager_bullets.active_bullet)
         manager_letters.add_letter()
         manager_bullets.move()
-        draw_screen(screen, player, manager_letters, manager_bullets)
+        draw_screen(screen, player, manager_letters, manager_bullets, messenger.text)
         clock.tick(FPS)
 
 

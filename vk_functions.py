@@ -17,9 +17,9 @@ def send_vk_message(data: dict, token: str):
             message += word + " "
 
         message = message[:-1]
-        if command == "закодируй":
+        if command.lower() == "закодируй":
             message = ders_crypt(message)
-        elif command == "раскодируй":
+        elif command.lower() == "раскодируй":
             message = decoding(message)
         else:
             message = """Привет, ты наверное пользуешься ботом впервые или забыл как это делать.

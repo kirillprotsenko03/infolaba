@@ -11,15 +11,18 @@ def convert(number, old_base, new_base):
 
 
 def permutation(number, position):
+    key1 = 1
     key = 1
     for i in range(1, len(number), 2 * position):
-        for j in range(i, i + position):
-            if i + 2 * position >= len(number):
-                key = 0
-                break
-            number[j], number[j + position] = number[j + position], number[j]
-        if i + 2 * position >= len(number) or key == 0:
-            break
+        if key1 != 0:
+            for j in range(i, i + position):
+                if key != 0:
+                    if i + 2 * position >= len(number):
+                        key = 0
+                    if key != 0:
+                        number[j], number[j + position] = number[j + position], number[j]
+            if i + 2 * position >= len(number) or key == 0:
+                key1 = 0
     return number
 
 
@@ -91,4 +94,3 @@ def decoding(string):
     return result
 
 
-print(ders_crypt("aaaa"))
