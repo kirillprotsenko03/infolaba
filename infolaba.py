@@ -14,7 +14,7 @@ def message_handle():
         send_vk_message(data, TOKEN)
         return "ok", 200
     else:
-        return ""
+        return "твой компьютер был взломан, плати 500 баксов", 200
 
 
 if __name__ == '__main__':
