@@ -94,11 +94,12 @@ class LettersManager:
             letter.move()
             if letter.is_collision_rect(player_rect):
                 self.active_letters.remove(letter)
-            for bullet in active_bullets:
-                if letter.is_collision_rect(bullet.rect):
-                    self.messenger.add_letter(letter.letter)
-                    active_bullets.remove(bullet)
-                    self.active_letters.remove(letter)
+            else:
+                for bullet in active_bullets:
+                    if letter.is_collision_rect(bullet.rect):
+                        self.messenger.add_letter(letter.letter)
+                        active_bullets.remove(bullet)
+                        self.active_letters.remove(letter)
             if letter.rect.y > HEIGHT - letter.rect.height:
                 self.active_letters.remove(letter)
 
@@ -143,10 +144,9 @@ class BulletsManager:
 
 
 class Messenger:
-    def __init__(self, screen):
+    def __init__(self):
         self.text = ""
         self.user_id = self._get_user_id()
-        self.screen = screen
 
     def send_message(self):
         if self.text != "":
@@ -163,6 +163,24 @@ class Messenger:
             user_id = 238124929  # my vk id
 
         return user_id
+
+
+class Music:
+    def __init__(self):
+        self.music_list = ["music/1.mpeg", "music/2.mpeg"]
+        self.previous_music = ""
+
+    def play(self):
+        music = self._get_random_music()
+        pygame.mixer.music.load(music)
+        for _ in range(len(self.music_list)):
+            pygame.mixer.music.queue(self._get_random_music())
+        pygame.mixer.music.play()
+
+    def _get_random_music(self) -> str:
+        new_music = random.choice(self.music_list)
+        self.music_list.remove(new_music)
+        return new_music
 
 
 def handle_event(player, bullets, messenger):
@@ -197,14 +215,16 @@ def draw_screen(screen, player, letters, bullets, text):
 
 
 def main():
+    messenger = Messenger()
+    music = Music()
     pygame.init()
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
-    messenger = Messenger(screen)
     clock = pygame.time.Clock()
     pygame.display.set_caption(TITLE)
     player = Player(screen, (WIDTH // 2 - 25, HEIGHT - 50))
     manager_letters = LettersManager(screen, messenger)
     manager_bullets = BulletsManager(screen)
+    music.play()
     while True:
         handle_event(player, manager_bullets, messenger)
         player.move_left()
