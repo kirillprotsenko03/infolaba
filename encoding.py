@@ -89,3 +89,6 @@ def decoding(string):
     result = ''.join(map(str, letter))
 
     return result
+
+
+print(ders_crypt("aaaa"))
